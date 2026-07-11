@@ -27,6 +27,8 @@ telnet localhost 4000
 nc localhost 4000
 ```
 
+Mine didn't work, had to run `docker run -it --rm --network infrastructure_default busybox telnet circlemud 4000`
+
 ## Create Admin Character
 
 The first character you create will because your admin character.

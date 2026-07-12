@@ -15,11 +15,11 @@ cd "$PARSER_DIR"
 
 for type in mob obj shp wld zon trg qst; do
     mkdir -p "$DEST/$type"
-    for file in $(find "$SRC/$type" -name "*.$type"); do
+    while IFS= read -r -d '' file; do
         number=$(basename "$file" ".$type")
         echo "parsing $file -> $DEST/$type/$number.json"
         uv run circlemud-parse --dest "$DEST/$type/$number.json" "$file"
-    done
+    done < <(find "$SRC/$type" -name "*.$type" -print0)
 done
 
 echo "Done. JSON written to $DEST"

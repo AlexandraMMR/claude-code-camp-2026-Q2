@@ -13,7 +13,7 @@ def check_structure():
     """Verify the skill directory structure."""
     print("Checking skill structure...")
     
-    current_dir = Path(__file__).parent
+    current_dir = Path(__file__).parent.parent  # Go up one level to main skill dir
     required_files = [
         "SKILL.md",
         "config.json",
@@ -38,7 +38,7 @@ def check_config():
     """Verify config.json structure."""
     print("\nChecking config.json...")
     
-    config_path = Path(__file__).parent / "config.json"
+    config_path = Path(__file__).parent.parent / "config.json"
     try:
         with open(config_path, 'r') as f:
             config = json.load(f)
@@ -60,7 +60,7 @@ def check_python_script():
     """Verify mud_client.py structure."""
     print("\nChecking mud_client.py...")
     
-    script_path = Path(__file__).parent / "scripts" / "mud_client.py"
+    script_path = Path(__file__).parent.parent / "scripts" / "mud_client.py"
     if not script_path.exists():
         print("✗ mud_client.py - MISSING")
         return False

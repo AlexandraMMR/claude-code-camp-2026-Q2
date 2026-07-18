@@ -4,7 +4,7 @@
 
 Our goal was to determine whether a simple coding agent can cost-effectively play a MUD (tbaMUD on `localhost:4000`) by finding the bakery and listing its menu. I used Antigravity as my IDE and am testing various Claude models.
 
-## Observations
+## Observations 
 
 - **Temporary connection scripts**: The agent created multiple temporary Python and PowerShell scripts (`mud_client.py`, `mud_connect.ps1`) on each attempt to manage the raw TCP/socket connection, rather than using any reusable abstraction.
 - **Unrelated file reads**: The agent read `CLAUDE.md`, `data/player.md`, and `data/world.md` at the start — the memory files were empty and added no value, consuming unnecessary tokens.

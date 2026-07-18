@@ -24,6 +24,10 @@ class MUDClient:
         self.config_path = config_path
         self.config = self._load_config()
         self.tn = None
+    
+    def is_connected(self) -> bool:
+        """Check if client is connected to MUD."""
+        return self.tn is not None
         
     def _load_config(self) -> Dict[str, Any]:
         """Load connection configuration from JSON file."""
@@ -384,6 +388,10 @@ def main():
     map_parser.add_argument('--output', help='Output file for JSON map')
     map_parser.add_argument('--debug', action='store_true', help='Enable debug output')
     
+    # Disconnect command
+    disconnect_parser = subparsers.add_parser('disconnect', help='Disconnect from MUD')
+    disconnect_parser.add_argument('--debug', action='store_true', help='Enable debug output')
+    
     args = parser.parse_args()
     
     if not args.command:
@@ -402,20 +410,30 @@ def main():
         if args.command == 'connect':
             response = client.connect(debug=args.debug)
             save_output(response, args.output)
+            # Don't disconnect after connect - keep connection open
+            print("\nNote: Connection remains open. Use 'disconnect' command to close.")
+            return
             
         elif args.command == 'cmd':
-            client.connect(debug=args.debug)
+            if not client.is_connected():
+                client.connect(debug=args.debug)
             response = client.send_command(args.mud_command)
             save_output(response, args.output)
+            print("\nNote: Connection remains open for further commands.")
+            print("Use 'disconnect' command when done.")
             
         elif args.command == 'run':
-            client.connect(debug=args.debug)
+            if not client.is_connected():
+                client.connect(debug=args.debug)
             responses = client.send_commands(args.commands)
             combined = "\n---\n".join(responses)
             save_output(combined, args.output)
+            print("\nNote: Connection remains open for further commands.")
+            print("Use 'disconnect' command when done.")
             
         elif args.command == 'status':
-            client.connect(debug=args.debug)
+            if not client.is_connected():
+                client.connect(debug=args.debug)
             status = client.get_status()
             
             if args.output:
@@ -424,6 +442,8 @@ def main():
                 print(f"Status saved to {args.output}")
             else:
                 print(json.dumps(status, indent=2))
+            print("\nNote: Connection remains open for further commands.")
+            print("Use 'disconnect' command when done.")
                 
         elif args.command == 'session':
             client.connect(debug=args.debug)
@@ -443,9 +463,13 @@ def main():
                     break
                 except EOFError:
                     break
+            # Session ends, disconnect
+            client.disconnect()
+            return
                     
         elif args.command == 'map':
-            client.connect(debug=args.debug)
+            if not client.is_connected():
+                client.connect(debug=args.debug)
             # Basic mapping - explore immediate area
             commands = ["look", "n", "s", "e", "w", "u", "d"]
             responses = {}
@@ -466,8 +490,16 @@ def main():
                 print(f"Map data saved to {args.output}")
             else:
                 print(json.dumps(map_data, indent=2))
+            print("\nNote: Connection remains open for further commands.")
+            print("Use 'disconnect' command when done.")
+        
+        elif args.command == 'disconnect':
+            client.disconnect()
+            print("Disconnected from MUD")
+            return
     
-    finally:
+    except Exception as e:
+        print(f"ERROR: {e}")
         client.disconnect()
 
 

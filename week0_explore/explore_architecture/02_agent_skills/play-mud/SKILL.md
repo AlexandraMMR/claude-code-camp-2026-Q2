@@ -219,3 +219,143 @@ If the agent gets lost, it can:
 2. Look for landmarks to reorient
 3. Ask other players for help with `say`
 4. Systematically map the area using the `map` command
+
+
+## Complete MUD Command Reference
+
+Based on `commands` output, here are all available commands:
+
+### Movement & Exploration
+- **Basic**: `north`, `south`, `east`, `west`, `up`, `down`, `look`, `exits`, `enter`, `leave`
+- **Position**: `sleep`, `wake`, `rest`, `sit`, `stand`, `lock`, `unlock`, `open`, `close`
+- **Automation**: `autoassist`, `autodoor`, `autoexits`, `autogold`, `autokey`, `autoloot`, `automap`, `autosac`, `autosplit`
+
+### Communication
+- **Basic**: `say`, `gsay`, `shout`, `holler`, `tell`, `ask`, `whisper`
+- **Social**: `socials`, `emote`, `gsay`, `gtell`, `gossip`, `grats`, `auction`
+- **Mail**: `mail`, `receive`, `check`
+- **Filters**: `notell`, `noshout`, `nogossip`, `nograts`, `noauction`
+
+### Objects & Inventory
+- **Interaction**: `get`, `drop`, `junk`, `donate`, `put`, `give`, `wear`, `grab`, `inventory`, `equipment`, `remove`
+- **Examination**: `examine`, `eat`, `drink`, `taste`, `sip`, `pour`
+- **Wealth**: `gold`, `balance`, `deposit`, `value`
+
+### Information
+- **Character**: `score`, `help`, `info`, `who`, `news`, `time`, `weather`, `where`, `consider`, `levels`
+- **System**: `wizlist`, `immlist`, `credits`, `toggle`, `flags`, `wizhelp`, `areas`, `astat`, `diagnose`
+- **Display**: `display`, `hindex`, `history`, `motd`, `policy`, `prefedit`, `prompt`
+
+### Combat
+- **Basic**: `kill`, `wield`, `flee`, `assist`, `track`
+- **Skills**: `kick`, `bash`, `rescue`, `backstab`, `cast`
+- **Auto**: `autoassist`, `autokey`
+
+### Utility
+- **Basic**: `!`, `bug`, `idea`, `typo`, `quit`, `save`, `brief`, `compact`
+- **Settings**: `title`, `nosummon`, `commands`, `socials`, `display`
+- **Navigation**: `map`, `automap`
+
+### Special Actions
+- `follow`, `unfollow`, `hold`, `hit`, `order`, `page`, `qsay`, `quaff`, `quest`, `sneak`, `split`, `steal`, `sw`, `whirlwind`
+
+## Goal Decomposition Strategy
+
+When approaching any MUD task, follow this process:
+
+### 1. Pre-execution Planning
+```bash
+# Check character status first
+python scripts/mud_client.py status --output data/player_status.json
+
+# Get available commands
+python scripts/mud_client.py cmd commands
+
+# Check current location
+python scripts/mud_client.py cmd look
+```
+
+### 2. Systematic Exploration
+```bash
+# Explore and map area
+python scripts/mud_client.py run --commands "look" "exits" "n" "look" "s" "e" "look" "w" "look"
+
+# Save discoveries to map
+python scripts/mud_client.py map --output data/world_map.json
+```
+
+### 3. Task Execution
+```bash
+# Use sequences for complex tasks
+python scripts/mud_client.py run --commands "say Hello" "ask npc about location" "where player"
+
+# Check results
+python scripts/mud_client.py cmd score
+```
+
+### 4. Documentation
+```bash
+# Update player state
+python scripts/mud_client.py status --output data/player.json
+
+# Update world knowledge
+# (Manual update based on discoveries)
+```
+
+## Map Saving Protocol
+
+After each exploration session:
+1. Run `map` command to capture current area
+2. Update `data/world.md` with room descriptions
+3. Update `data/player.md` with current location
+4. Create navigation notes in `data/navigation.md`
+
+## Agent Best Practices
+
+1. **Always start with `status`** - Know your capabilities
+2. **Use `commands` to discover available actions** - Don't guess commands
+3. **Systematic exploration** - Don't wander randomly
+4. **Save frequently** - Update map and state files
+5. **Use `run` for sequences** - More efficient than individual commands
+6. **Check `help <command>`** - Get details on specific commands
+7. **Document discoveries** - Update reference files
+
+
+## Memory Management and Exploration Best Practices
+
+### Goal Decomposition Before Execution
+1. Define the goal clearly (e.g., "find the bakery")
+2. Break into sequential steps with specific actions
+3. Verify prerequisites before executing
+4. Document the plan before starting
+
+### Systematic Map Saving
+After each exploration session:
+1. Record room name and description
+2. Document all exits (n, s, e, w, u, d)
+3. Note NPCs, items, or features in the room
+4. Save to data/explored_map.json
+5. Update data/world.md with new information
+6. Update data/player.md with current location
+
+### Command Discovery Process
+1. Use `commands` to see all available verbs
+2. Use `help <command>` for details on specific commands
+3. Use `socials` to discover social interactions
+4. Test safe commands first (look, score, who)
+5. Document useful commands for future reference
+
+### Navigation Protocol
+1. Start with `look` to check current location
+2. Check `exits` to see available directions
+3. Move one direction at a time
+4. Record each new room with `look` and `exits`
+5. Keep track of previous rooms for backtracking
+6. Use `where` to see other player locations if lost
+
+### Exploration Tips
+- Bakeries are typically in market districts or commercial areas
+- Look for keywords: "bakery", "bread", "oven", "pastry", "bake", "flour"
+- NPC names may indicate their purpose (e.g., "baker")
+- Use `list` command at shops to see menu/prices
+- Use `buy <item>` to purchase items

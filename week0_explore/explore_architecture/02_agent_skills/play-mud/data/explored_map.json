@@ -1,0 +1,127 @@
+{
+  "rooms": {
+    "By The Temple Altar": {
+      "description": "Northern end of Temple of Midgaard with altar and Odin statue",
+      "exits": [
+        "n",
+        "s"
+      ],
+      "discovered": "2026-07-18T15:17:33.595949",
+      "discoveries": {
+        "type": "temple",
+        "landmark": "Odin statue"
+      }
+    },
+    "The Temple Of Midgaard": {
+      "description": "Southern temple hall with ATM, Reading Room to west",
+      "exits": [
+        "n",
+        "e",
+        "s",
+        "w",
+        "d"
+      ],
+      "discovered": "2026-07-18T15:17:34.109788",
+      "discoveries": {
+        "type": "temple",
+        "feature": "ATM",
+        "west": "Reading Room"
+      }
+    },
+    "The Temple Square": {
+      "description": "Square with fountain, Clerics' Guild west, Grunting Boar Inn east",
+      "exits": [
+        "n",
+        "e",
+        "s",
+        "w"
+      ],
+      "discovered": "2026-07-18T15:17:34.622816",
+      "discoveries": {
+        "type": "square",
+        "npc": "Peacekeeper",
+        "feature": "fountain"
+      }
+    },
+    "Market Square": {
+      "description": "Center of Midgaard with peculiar statue, roads in all directions",
+      "exits": [
+        "n",
+        "e",
+        "s",
+        "w"
+      ],
+      "discovered": "2026-07-18T15:17:35.138742",
+      "discoveries": {
+        "type": "market",
+        "central": true
+      }
+    },
+    "Main Street (west of Market Square)": {
+      "description": "Passing through City of Midgaard, bakery to north, armory south",
+      "exits": [
+        "n",
+        "e",
+        "s",
+        "w"
+      ],
+      "discovered": "2026-07-18T15:17:35.645045",
+      "discoveries": {
+        "type": "street",
+        "north": "bakery",
+        "south": "armory"
+      }
+    },
+    "The Bakery": {
+      "description": "Small bakery with sweet scent, sign on counter, baker present",
+      "exits": [
+        "s"
+      ],
+      "discovered": "2026-07-18T15:17:36.153217",
+      "discoveries": {
+        "type": "shop",
+        "shop_type": "bakery",
+        "menu": {
+          "danish pastry": 7,
+          "bread": 14,
+          "waybread": 72
+        },
+        "npc": "baker",
+        "sign": "Buy - buy bread/pastry, List - see prices"
+      }
+    }
+  },
+  "connections": {},
+  "exploration_log": [
+    {
+      "timestamp": "2026-07-18T15:17:33.596727",
+      "action": "discovered",
+      "location": "By The Temple Altar"
+    },
+    {
+      "timestamp": "2026-07-18T15:17:34.109788",
+      "action": "discovered",
+      "location": "The Temple Of Midgaard"
+    },
+    {
+      "timestamp": "2026-07-18T15:17:34.622816",
+      "action": "discovered",
+      "location": "The Temple Square"
+    },
+    {
+      "timestamp": "2026-07-18T15:17:35.138742",
+      "action": "discovered",
+      "location": "Market Square"
+    },
+    {
+      "timestamp": "2026-07-18T15:17:35.645045",
+      "action": "discovered",
+      "location": "Main Street (west of Market Square)"
+    },
+    {
+      "timestamp": "2026-07-18T15:17:36.153217",
+      "action": "discovered",
+      "location": "The Bakery"
+    }
+  ]
+}

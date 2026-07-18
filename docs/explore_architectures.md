@@ -19,3 +19,42 @@ A coding harness or default agent with a coding focus is not a good fit for oper
 
 - **State storage**: Markdown files (`player.md`, `world.md`) are too unstructured for complex, evolving player and world state; a structured format (JSON, SQLite) would be more reliable, it still didn't update any of the files or memory after the actions though.
 - **Goal status**: The bakery was located (`where baker` → `The Bakery`), but the menu was not retrieved before this summary was written. Navigation to the room and a `list` command remain incomplete, it seemed to get confused on which direction to go, didn't have memory for the mapping, it would go one direction and then back the same direction. It also had an issue staying connected, it would timeout or lose connection and need to reconnect, which reset its progress or have to re-write the scripts and run them again. It could connect and login though eventually, so that was a step forward. 
+
+## Agent skills driven by main agent eg. /.skills
+
+A very common way to drive specific functionality is via Agent Skills like SKILL.md, which is an open format for agents adopted by many coding harnesses and agent SDKs. 
+
+## Architecture Recommendation
+
+### 1. Connection Layer (Standard Library)
+- Use Python's built-in `socket` library for raw TCP connections — no need for MCP or special drivers for a simple socket-based MUD.
+- Create a reusable `MUDClient` class or module that handles:
+  - Connecting with configurable host/port
+  - Login sequence (username → password → RETURN → class selection)
+  - Sending raw strings over the socket
+  - Reading/parsing output with timeout
+
+### 2. Agent Loop (Reasoning)
+- Use a standard LLM agent (like Claude Sonnet/Opus) for the high-level logic:
+  - Decide which command to send next
+  - Interpret MUD output and update internal state
+  - Plan navigation paths
+  - Handle errors and retry logic
+- Keep the agent **disconnected** from the raw socket — it should call a helper function `client.send_command("north")` rather than printing raw text.
+
+### 3. State Management (Structured Files)
+- Create a simple JSON-based state system:
+  - `player.json` — name, class, inventory, stats
+  - `world.json` — rooms, exits, objects, NPCs
+  - `map.json` — room connections and coordinates
+- Update these files after each completed action, before the next reasoning step.
+
+## Example Flow
+
+1. **Init**: Load state from JSON files
+2. **Reason**: Agent decides "I need to go north"
+3. **Action**: Call `client.send_command("north")`
+4. **Feedback**: Parse output, update `world.json` with new room
+5. **Loop**: Repeat until goal achieved
+
+This separates the **deterministic connection logic** (handled by code) from the **strategic reasoning** (handled by LLM), avoiding the current mess of temporary scripts and token inefficiency.

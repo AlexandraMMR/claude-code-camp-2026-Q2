@@ -1,0 +1,6 @@
+{
+  "host": "localhost",
+  "port": 4000,
+  "character": "dummy",
+  "password": "helloworld"
+}

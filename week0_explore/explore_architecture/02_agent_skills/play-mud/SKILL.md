@@ -8,6 +8,33 @@ This skill enables AI agents to connect to and interact with a local CircleMUD s
 2. Verify credentials in `config.json` (`dummy`/`helloworld`)
 3. Use the skill commands to connect and interact
 
+## Agent Workflow Strategy
+
+### Goal Decomposition (DO THIS FIRST)
+Before executing any task, decompose it into steps:
+
+**Example: Finding the bakery**
+1. Check current location with `look`
+2. Navigate to Market Square if needed
+3. Go west to Main Street  
+4. Look for "bakery is to the north" in description
+5. Go north to bakery
+6. Use `list` to get menu
+7. Save findings
+
+### Command Discovery
+Before using unfamiliar commands:
+1. `commands` - Get all available verbs
+2. `help <command>` - Get details on specific commands
+3. `socials` - Discover social interactions
+
+### Map Saving Protocol
+After each exploration:
+1. Run `look` to get room description
+2. Record room name, exits, features
+3. Update `data/explored_map.json` with new rooms
+4. Update `data/navigation_notes.md` with paths
+
 ## Available Commands
 
 The skill uses `scripts/mud_client.py` with these subcommands:
@@ -22,9 +49,11 @@ Opens Telnet session, auto-logs in, returns initial room description.
 ### `cmd` - Send a single raw command
 ```bash
 python scripts/mud_client.py cmd look
+python scripts/mud_client.py cmd "kick baker"
 ```
 Sends a single raw MUD command. If not already connected, establishes connection first.
 **Connection remains open** after command for further actions.
+**Tip**: Use quotes around commands with spaces: `"kick baker"`
 
 ### `disconnect` - Close connection
 ```bash
@@ -34,7 +63,7 @@ Manually disconnect from MUD server.
 
 ### `run` - Send a sequence of commands
 ```bash
-python scripts/mud_client.py run --commands "n" "look" "score" --output response.txt
+python scripts/mud_client.py run --commands "n" "look" "s" "score"
 ```
 Sends commands one-by-one with 200ms delay between each, collects all responses.
 

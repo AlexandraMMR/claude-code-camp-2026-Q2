@@ -6,7 +6,7 @@
 |---|---|
 | **Name** | `play-mud` |
 | **Description** | Connect an AI agent to a local CircleMUD server via Telnet. Supports auto-login, raw command execution, natural-language-to-command translation, character status queries, room mapping, and interactive sessions. |
-| **Install path** | `C:\Users\mmara\Claude bootcamp\02_agent_skills\play-mud\` |
+| **Install path** | `c:\Users\mmara\Claude bootcamp\claude-code-camp-2026-Q2\week0_explore\explore_architecture\02_agent_skills\play-mud\` |
 
 ---
 
@@ -133,4 +133,4 @@ A `circlemud_commands.md` reference covering:
 | Stock CircleMUD? | Assumed stock 3.x (treat unknowns gracefully) |
 | NL translation? | Agent-side using command reference cheat-sheet |
 | Map subcommand? | Yes |
-| Install location? | `C:\Users\mmara\Claude bootcamp\02_agent_skills\play-mud\` |
+| Install location? | `c:\Users\mmara\Claude bootcamp\claude-code-camp-2026-Q2\week0_explore\explore_architecture\02_agent_skills\play-mud\` |

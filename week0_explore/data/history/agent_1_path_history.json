@@ -1,0 +1,16 @@
+{
+  "records": [
+    {
+      "agent_id": "agent_1",
+      "location_id": "room_1",
+      "action": "explore",
+      "success": true,
+      "timestamp": "2026-07-19T12:11:06.830506+00:00",
+      "time_spent": 500,
+      "record_type": "success",
+      "metadata": {}
+    }
+  ],
+  "last_updated": "2026-07-19T12:11:06.830506",
+  "record_count": 1
+}

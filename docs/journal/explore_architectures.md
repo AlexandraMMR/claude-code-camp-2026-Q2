@@ -2,7 +2,7 @@
 
 ## Goal
 
-Our goal was to determine whether a simple coding agent can cost-effectively play a MUD (tbaMUD on `localhost:4000`) by finding the bakery and listing its menu. I used Antigravity as my IDE and am testing various Claude models.
+Our goal was to determine whether a simple coding agent can cost-effectively play a MUD (tbaMUD on `localhost:4000`) by finding the bakery and listing its menu. I used Antigravity, then Kiro as my IDE and am testing various Claude models, DeepSeek and Qwen3.
 
 ## Observations 
 

@@ -1,0 +1,1 @@
+"""NPC storage module."""

@@ -6,3 +6,5 @@
 .env.local
 .vscode/settings.json
 */world/*
+.kiro/*
+.vscode/*

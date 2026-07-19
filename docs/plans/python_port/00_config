@@ -1,0 +1,129 @@
+# Python Port Plan - Step 00: Configuration
+
+This plan ports the Ruby `00_config` implementation to Python.
+
+## Reference Files
+
+### Ruby Source Files to Port
+| Ruby File | Python Equivalent |
+|-----------|-------------------|
+| `week1_baseline/ruby/00_config/lib/boukensha/config.rb` | `src/boukensha/config.py` |
+| `week1_baseline/ruby/00_config/lib/boukensha/tasks/base.rb` | `src/boukensha/tasks/base.py` |
+| `week1_baseline/ruby/00_config/lib/boukensha/tasks/player.rb` | `src/boukensha/tasks/player.py` |
+| `week1_baseline/ruby/00_config/lib/boukensha.rb` | `src/boukensha/__init__.py` |
+| `week1_baseline/ruby/00_config/examples/example.rb` | `src/examples/example.py` |
+| `week1_baseline/ruby/00_config/prompts/system.md` | `src/prompts/system.md` |
+
+### Configuration Files (Keep Existing)
+| Location | Purpose |
+|----------|---------|
+| `.boukensha/.env` | Environment variables (already exists) |
+| `.boukensha/settings.yml` | Settings file (already exists) |
+| `.boukensha/tasks/player/system.md` | Per-task prompt override (already exists) |
+
+## Dependencies
+
+### Ruby Gems
+- `dotenv` (for loading `.env` files)
+
+### Python Equivalents
+- `python-dotenv` (install with: `pip install python-dotenv`)
+- `pyyaml` (install with: `pip install pyyaml`)
+
+**Add to `requirements.txt`:**
+```
+python-dotenv
+pyyaml
+```
+
+## Implementation Notes
+
+### 1. Directory Structure (in week1_baseline/python/00_config)
+```
+week1_baseline/python/00_config/
+├── boukensha/
+│   ├── __init__.py       # Top-level require (equivalent to lib/boukensha.rb)
+│   ├── config.py         # Boukensha::Config class
+│   └── tasks/
+│       ├── __init__.py
+│       ├── base.py       # Boukensha::Tasks::Base abstract class
+│       └── player.py     # Boukensha::Tasks::Player concrete class
+├── examples/
+│   └── example.py        # Runnable smoke-test
+└── prompts/
+    └── system.md         # Default system prompt
+```
+
+### 2. Key Translation Points
+
+| Ruby | Python |
+|------|--------|
+| `require_relative` | `from . import` (relative imports) |
+| `File.expand_path` | `pathlib.Path.resolve()` |
+| `Dir.home` | `pathlib.Path.home()` |
+| `File.join` | `pathlib.Path` with `/` operator |
+| `ENV.fetch` | `os.environ.get` with default |
+| `Hash#[]` | `dict` subscript or `.get()` |
+| Symbol (`:key`) | String (`"key"`) or attribute access |
+| `File.read(path)` | `Path.read_text()` or `open().read()` |
+| `nil` | `None` |
+| `raise NotImplementedError` | `raise NotImplementedError` |
+| `raise ArgumentError` | `raise ValueError` |
+| `&.slice(0, 60)` (safe navigation) | `text[:60] if text else None` |
+
+### 3. Settings File Format
+Ruby uses `settings.yaml`, Python will use `settings.yml` (same format - YAML is language-agnostic). The existing `.boukensha/settings.yml` can be used directly.
+
+### 4. Config Directory Resolution
+Ruby logic (preserve in Python):
+```
+1. BOUKENSHA_DIR env var (set before loading .env)
+2. ~/.boukensha (default)
+```
+
+### 5. Tasks Abstract Class
+Ruby uses class methods on abstract base. Python equivalent:
+- Keep as class methods (no instance creation)
+- Use `@classmethod` decorator where needed
+- `task_name` as class property
+
+### 6. System Prompt Resolution
+Preserve the exact order:
+1. `.boukensha/prompts/<task>/system.md` (if `prompt_override.system == true`)
+2. `src/prompts/system.md` (default shipped with library)
+
+## Questions to Answer
+
+1. **Package name**: Should the Python package be `boukensha` (same as Ruby)?
+2. **Entry point location**: `week1_baseline/python/00_config` - confirmed
+3. **Testing framework**: `pytest` (recommended) or `unittest`?
+4. **Python version**: What's the minimum version to support?
+5. **Virtual environment**: Create `requirements.txt` with `python-dotenv` and `pyyaml`?
+6. **MCP servers**: Port the `mcp_servers` config from `settings.yml` in this step?
+
+## Implementation Complete
+
+All files have been ported. See `week1_baseline/python/00_config/` for the implementation.
+
+### To Run:
+```bash
+cd week1_baseline/python/00_config
+pip install -r requirements.txt
+python examples/example.py
+```
+
+### To Test:
+```bash
+cd week1_baseline/python/00_config
+pip install pytest
+pytest tests/ -v
+```
+
+## Notes
+
+- The Ruby code uses a `tasks` hash in settings (plural). Preserve this structure.
+- The settings file uses `provider` and `model` keys under each task.
+- The `mud` section in settings.yml contains connection credentials (MUD_HOST, MUD_PORT, etc.)
+- The `.env` file stores the `ANTHROPIC_API_KEY` - this is loaded by dotenv.
+- Ruby allows `?` in function names; Python doesn't, so `prompt_override?` became `prompt_override`.
+- Python requires explicit imports for module members; Ruby's `require_relative` loads all module code automatically.

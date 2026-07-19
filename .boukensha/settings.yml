@@ -12,6 +12,14 @@ tasks:
     #model: gpt-5.4-mini
     prompt_override:
       system: true
+
+# MUD connection credentials
+mud:
+  host: localhost
+  port: 4000
+  username: dummy
+  password: helloworld
+
 # EVERY tool the agent has comes from this block. boukensha ships none of its
 # own — it is an MCP host, and an empty mcp_servers means an agent that can
 # only talk. Each entry is one server process: command + args + env, the same

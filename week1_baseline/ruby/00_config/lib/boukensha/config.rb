@@ -83,7 +83,7 @@ module Boukensha
     end
 
     def load_settings
-      settings_file = File.join(@dir, "settings.yaml")
+      settings_file = File.join(@dir, "settings.yml")
       if File.exist?(settings_file)
         YAML.safe_load(File.read(settings_file)) || {}
       else

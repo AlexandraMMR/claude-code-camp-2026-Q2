@@ -6,6 +6,9 @@ Build an agent skill that connects to CircleMUD and logs in, navigates the world
 
 Wasn't sure if the scripts would work with CircleMUD's specific login flow for the agent and skills. The authentication sequence was unclear first to me as a human, then the agent did the same mistakes in the order, it was confusing whether it needed username and password, from the start, or it needed other answers. Connection persistence was another uncertainty - whether commands could maintain state across invocations or if each would need fresh connections.
 
+## Technical Hypotheses
+A working (hopefully) agent that can test and play the MUD game at a basic level. 
+
 ## Technical Observations
 
 * My first mistake was commiting the whole world folder to the repo, then fixing that, I think it would've been better if that specification was done in the previous video, as I saw so many folks on Discord making the same mistake, so it would've been better to mention that in the instructions/video so we don't waste time fixing it after. 
@@ -24,32 +27,3 @@ Wasn't sure if the scripts would work with CircleMUD's specific login flow for t
 ## Key Takeaway
 
 This was a good exercise and actually took quite a lot of time to go through, especialley the Agent Arch 1 and 2. DeepSeek models are far cheaper and performed decently. Qwen 3 Coder Next at 0.05x rate proved very capable, completing systematic exploration, map saving, and goal decomposition patterns with minimal manual intervention. The skill now handles 100+ MUD commands, saves maps systematically, and decomposes goals before execution. Building a working MUD agent skill requires solving connection persistence and flexible authentication as well as navigation memory. The skill enables agents to explore systematically, but actual navigation to specific locations still requires careful room description parsing and pathfinding.
-
-## Agent-and-Skills Improvements Spec
-
-Created comprehensive tasks.md file with 300+ tasks across 14 phases:
-
-- Phase 1: Core architecture setup (directory structure, data models, indexing)
-- Phase 2: Task manager with dynamic prioritization
-- Phase 3: Pathfinder with history tracking and alternative path evaluation
-- Phase 4: Skill manager with registration and dependency management
-- Phase 5: Configuration manager with hierarchical layers
-- Phase 6: Persona manager for exploration style configuration
-- Phase 7: Feedback system for execution results and diagnostics
-- Phase 8: Observability system with metrics collection and alerting
-- Phase 9: Connection layer with HTTP/WebSocket/SSH abstractions
-- Phase 10-11: World and player memory stores with JSON files
-- Phase 12: Integration and testing (property-based, unit, integration)
-- Phase 13: Documentation (README, API docs, CLAUDE.md, SKILL.md updates)
-- Phase 14: Migration (data conversion, script updates)
-
-Key improvements documented:
-- Dynamic task prioritization based on context
-- Improved observability with token usage tracking
-- Scalable JSON-based state management
-- Efficient connection layer abstractions
-- Improved pathfinding with history tracking
-- Player personas for different exploration styles
-- Real-time memory updates with concurrency control
-
-The spec defines 30 correctness properties to validate implementation.

@@ -5,6 +5,8 @@ Build an agent skill that connects to CircleMUD and logs in, navigates the world
 ## Technical Uncertainty
 
 
+## Technical Hypotheses
+
 
 ## Technical Observations
 
